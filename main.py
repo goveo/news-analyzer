@@ -2,7 +2,7 @@
 from database import database
 
 if __name__ == '__main__':
-    db = database.connect("mongodb://localhost:27017/", "course-work")
+    db = database.connect()
     print("database connected")
     #
     # item_id = db["news"].insert_one({

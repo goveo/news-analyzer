@@ -9,6 +9,10 @@ verify_ssl = true
 pymongo = "*"
 requests = "*"
 scrapy = "*"
+matplotlib = "*"
+pandas = "*"
+pymorphy2 = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.6"
