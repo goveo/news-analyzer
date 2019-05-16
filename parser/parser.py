@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import re
+import datetime
+import os, sys
 
+module_path = os.path.abspath(os.getcwd())
+
+if module_path not in sys.path:
+    sys.path.append(module_path)
 #scrapy runspider ...
+from database import database
 
 
 class Spider(scrapy.Spider):
     print("news parser")
+    db = database.connect("mongodb://localhost:27017/", "course-work")
     name = 'news'
     allowed_domains = ['fakty.ua']
     page = 1
@@ -28,9 +35,14 @@ class Spider(scrapy.Spider):
                 link = item.xpath(".//a//@href").extract_first()
                 time = item.xpath(".//span[@class='time']//text()").extract_first()
                 date = item.xpath(".//span[@class='g-gate']/text()").extract()[2]
-
-
-
+                if (date == "сегодня"):
+                    date = datetime.date.today()
+                else:
+                    date = datetime.strptime(date, '%d.%b.%Y')
+                # self.db["news"].insert_one({
+                #     "text": text,
+                #     "link": link,
+                # })
                 print(title)
                 print(text)
                 print(link)
