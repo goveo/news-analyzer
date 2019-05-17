@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import nltk
+import collections
+from collections import defaultdict
 
 import filter
 import pymorphy2
@@ -58,6 +60,34 @@ def get_popular_words():
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість входжень', fontsize=10)
     plt.show()
-# print(dict_sort(words))
 
-get_popular_words()
+
+def sort_dates(dates):
+    result = defaultdict(int)
+    for obj in dates:
+        hour = obj["date"].hour
+        print(hour)
+        index = hour//2
+        result[index] = result[index] + 1
+    od = collections.OrderedDict(sorted(result.items()))
+    return dict(od)
+
+
+def get_time():
+    dates = filter.get_dates()
+
+    dates = sort_dates(dates)
+    dict_keys = list(dates.keys())
+    dict_values = list(dates.values())
+    dict_keys = list(map(lambda x : "{}-{}".format(x*2, x*2+2), dates))
+    top_keys = len(dates)
+
+    plt.title('Кількість новин у проміжок годин дня', fontsize=10)
+    plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
+    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=8)
+    plt.yticks(fontsize=10)
+    plt.ylabel('Кількість новин', fontsize=10)
+    plt.show()
+
+# get_popular_words()
+# get_time()

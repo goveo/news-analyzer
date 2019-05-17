@@ -21,3 +21,10 @@ def get_all_titles() -> []:
 #         {"$group": {"_id": {"$toLower": "$title"}, "appears": {"$sum": 1}}},
 #         {"$sort": {"title": 1}}
 #     ])
+
+def get_dates():
+    db = database.connect()
+    return db.news.aggregate([
+        {'$sort': {'date': 1}},
+        {"$project": {"_id": 0, "date": 1}}
+    ])
