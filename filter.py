@@ -3,9 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime
+db = database.connect()
+
 
 def get_all_titles() -> []:
-    db = database.connect()
     return db.news.distinct("title")
 
 # return db.news.aggregate([
@@ -23,7 +24,6 @@ def get_all_titles() -> []:
 #     ])
 
 def get_dates():
-    db = database.connect()
     return db.news.aggregate([
         {'$sort': {'date': 1}},
         {"$project": {"_id": 0, "date": 1}}

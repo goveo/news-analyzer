@@ -10,9 +10,9 @@ from nltk.corpus import stopwords
 from nltk import word_tokenize,sent_tokenize
 
 morph = pymorphy2.MorphAnalyzer()
-
 from collections import Counter
 
+weekdays_list = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
 def get_colors(n):
     colors = []
@@ -56,13 +56,13 @@ def get_popular_words():
 
     plt.title('Найчастіші слова у новинах', fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
-    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=8)
+    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість входжень', fontsize=10)
     plt.show()
 
 
-def sort_dates(dates):
+def sort_dates_by_time(dates):
     result = defaultdict(int)
     for obj in dates:
         hour = obj["date"].hour
@@ -76,18 +76,44 @@ def sort_dates(dates):
 def get_time():
     dates = filter.get_dates()
 
-    dates = sort_dates(dates)
-    dict_keys = list(dates.keys())
+    dates = sort_dates_by_time(dates)
     dict_values = list(dates.values())
     dict_keys = list(map(lambda x : "{}-{}".format(x*2, x*2+2), dates))
     top_keys = len(dates)
 
     plt.title('Кількість новин у проміжок годин дня', fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
-    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=8)
+    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.ylabel('Кількість новин', fontsize=10)
+    plt.show()
+
+
+def sort_dates_by_weekday(dates):
+    result = defaultdict(int)
+    for obj in dates:
+        weekday = obj["date"].weekday()
+        result[weekday] = result[weekday] + 1
+    od = collections.OrderedDict(sorted(result.items()))
+    return dict(od)
+
+
+def get_weekdays():
+    dates = filter.get_dates()
+    dates = sort_dates_by_weekday(dates)
+    print(dates)
+
+    dict_values = list(dates.values())
+    dict_keys = list(map(lambda x: "{}".format(weekdays_list[x]), dates))
+    top_keys = len(dates)
+
+    plt.title('Кількість новин у дні тижня', fontsize=10)
+    plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
+    plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість новин', fontsize=10)
     plt.show()
 
 # get_popular_words()
 # get_time()
+get_weekdays()
