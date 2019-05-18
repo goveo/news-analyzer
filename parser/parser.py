@@ -12,7 +12,7 @@ from database import database
 
 class Spider(scrapy.Spider):
     print("news parser")
-    db = database.connect("mongodb://localhost:27017/", "course-work")
+    db = database.connect()
     name = 'news'
     allowed_domains = ['fakty.ua']
     page = 1
