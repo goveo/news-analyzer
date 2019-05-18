@@ -46,6 +46,7 @@ def prepare_titles(titles):
 
 def get_popular_words():
     titles = filter.get_all_titles()
+    titles_count = len(titles)
     titles = prepare_titles(titles)
     # titles = set_titles_in_one_list(titles)
 
@@ -55,7 +56,7 @@ def get_popular_words():
     dict_values = list(words.values())
     top_keys = len(words)
 
-    plt.title('Найчастіші слова у новинах', fontsize=10)
+    plt.title('Найчастіші слова у новинах (оброблено {} новин)'.format(titles_count), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
@@ -130,6 +131,7 @@ def get_weekdays():
     plt.ylabel('Кількість новин', fontsize=10)
     plt.show()
 
-get_popular_words()
+
+# get_popular_words()
 # get_time()
 # get_weekdays()
