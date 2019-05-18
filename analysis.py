@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 import nltk
 import collections
 from collections import defaultdict
@@ -64,28 +65,43 @@ def get_popular_words():
 
 def sort_dates_by_time(dates):
     result = defaultdict(int)
+    current_day = -1
+    prev_day = current_day
+    days_number = -1
     for obj in dates:
+        current_day = obj["date"].weekday()
         hour = obj["date"].hour
-        print(hour)
+        # print(hour)
         index = hour//2
         result[index] = result[index] + 1
-    od = collections.OrderedDict(sorted(result.items()))
-    return dict(od)
+
+        if (current_day != prev_day):
+            days_number += 1
+        prev_day = current_day
+
+    print(result)
+    result = collections.OrderedDict(sorted(result.items()))
+
+    for key, value in result.items():
+        result[key] = value/days_number
+
+    return (days_number, dict(result))
 
 
 def get_time():
     dates = filter.get_dates()
 
-    dates = sort_dates_by_time(dates)
+    days_number, dates = sort_dates_by_time(dates)
     dict_values = list(dates.values())
     dict_keys = list(map(lambda x : "{}-{}".format(x*2, x*2+2), dates))
     top_keys = len(dates)
 
-    plt.title('Кількість новин у проміжок годин дня', fontsize=10)
+    plt.title('Кількість новин у проміжок годин дня (статистика за {} день)'.format(days_number), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість новин', fontsize=10)
+
     plt.show()
 
 
@@ -114,6 +130,6 @@ def get_weekdays():
     plt.ylabel('Кількість новин', fontsize=10)
     plt.show()
 
-# get_popular_words()
+get_popular_words()
 # get_time()
-get_weekdays()
+# get_weekdays()

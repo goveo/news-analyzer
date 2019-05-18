@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from time import sleep
 
 def connect(url="mongodb://localhost:27001/", dbname="course-work"):
-    print("connecting...")
+    # print("connecting...")
     # client = MongoClient(url, replicaset='rs0')
     # client = MongoClient('mongodb://localhost:27001,localhost:27002/?replicaSet=rs0')
     client = MongoClient(['localhost:27001', 'localhost:27002', 'localhost:27003'], replicaset='rs0')
@@ -13,5 +13,5 @@ def connect(url="mongodb://localhost:27001/", dbname="course-work"):
     # client.admin.command("replSetInitiate", config)
     # dblist = client.list_database_names()
     # print(dblist)
-    print("connected!")
+    # print("connected!")
     return client[dbname]
