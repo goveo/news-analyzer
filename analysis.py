@@ -15,6 +15,7 @@ from collections import Counter
 
 weekdays_list = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
+
 def get_colors(n):
     colors = []
     cm = plt.cm.get_cmap('tab10', n)
@@ -44,7 +45,7 @@ def prepare_titles(titles):
     return toReturn
 
 
-def get_popular_words():
+def get_popular_title_words():
     titles = filter.get_all_titles()
     titles_count = len(titles)
     titles = prepare_titles(titles)
@@ -108,23 +109,41 @@ def get_time():
 
 def sort_dates_by_weekday(dates):
     result = defaultdict(int)
+    current_day = -1
+    prev_day = current_day
+    days_number = 0
+    weeks_number = 0
     for obj in dates:
         weekday = obj["date"].weekday()
+        current_day = weekday
         result[weekday] = result[weekday] + 1
-    od = collections.OrderedDict(sorted(result.items()))
-    return dict(od)
+
+        if (current_day != prev_day):
+            days_number += 1
+
+        if (days_number == 6):
+            weeks_number +=1
+            days_number = 0
+        prev_day = current_day
+    result = collections.OrderedDict(sorted(result.items()))
+
+    for key, value in result.items():
+        result[key] = value/weeks_number
+
+    return (weeks_number, dict(result))
 
 
 def get_weekdays():
     dates = filter.get_dates()
-    dates = sort_dates_by_weekday(dates)
+    weeks_number, dates = sort_dates_by_weekday(dates)
     print(dates)
+    print("weeks_number : ", weeks_number)
 
     dict_values = list(dates.values())
     dict_keys = list(map(lambda x: "{}".format(weekdays_list[x]), dates))
     top_keys = len(dates)
 
-    plt.title('Кількість новин у дні тижня', fontsize=10)
+    plt.title('Кількість новин у дні тижня (статистика за {} тижнів)'.format(weeks_number), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
@@ -132,6 +151,27 @@ def get_weekdays():
     plt.show()
 
 
-# get_popular_words()
+def get_posting_stat():
+    dates = filter.get_year_dates()
+
+    dict_values = list()
+    for obj in dates:
+        print(obj)
+        dict_values.append(obj["count"])
+
+    dict_keys = list(map(lambda x: "=-)", dates))
+    top_keys = len(dict_values)
+
+    plt.title('Статистика новин у день', fontsize=10)
+    # plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
+    plt.plot(np.arange(len(dict_values)), dict_values, 'bo', np.arange(len(dict_values)), dict_values, 'k')
+    # plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.ylabel('Кількість новин', fontsize=10)
+    plt.xlabel('Кількість днів')
+    plt.show()
+
+# get_popular_title_words()
 # get_time()
 # get_weekdays()
+get_posting_stat()
