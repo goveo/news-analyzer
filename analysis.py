@@ -152,7 +152,7 @@ def get_weekdays():
 
 
 def get_posting_stat():
-    dates = filter.get_year_dates()
+    dates = filter.get_all_news_dates()
 
     dict_values = list()
     for obj in dates:
@@ -165,7 +165,26 @@ def get_posting_stat():
     plt.xlabel('Кількість днів')
     plt.show()
 
-get_popular_title_words()
-get_time()
-get_weekdays()
-get_posting_stat()
+
+def print_month_news(year, month):
+    news = filter.get_news_per_month(year, month)
+
+    for item in news:
+        print("{}\n{}\n{}\n".format(item["title"], item["text"], item["date"]))
+
+
+def print_day_news(year, month, day):
+    news = filter.get_news_per_day(year, month, day)
+
+    for item in news:
+        print("{}\n{}\n{}\n{}\n".format(item["title"], item["text"], item["date"], item["link"]))
+
+
+
+# print_month_news(year=2019, month=5)
+print_day_news(year=2019, month=5, day=10)
+
+# get_popular_title_words()
+# get_time()
+# get_weekdays()
+# get_posting_stat()

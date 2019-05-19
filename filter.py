@@ -22,7 +22,7 @@ def get_dates():
     ])
 
 
-def get_year_dates():
+def get_all_news_dates():
     return db.news.aggregate([
         {
             "$group": {
@@ -47,21 +47,86 @@ def get_year_dates():
     ])
 
 
+def get_news_per_month(year, month):
+    return db.news.aggregate([
+        {
+            "$match": {
+                "date": {
+                    "$exists": True
+                }
+            }
+        },
+        {
+            "$project": {
+                "month": {
+                    "$month": "$date"
+                },
+                "year": {
+                    "$year": "$date"
+                },
+                "date": 1,
+                "title": 1,
+                "text": 1,
+                "link": 1
+            }
+        },
+        {
+            "$match": {
+                "month": month,
+                "year": year
+            }
+        },
+        {
+            "$sort": {
+                "date": 1
+            }
+        }
+    ])
+
+
+
+def get_news_per_day(year, month, day):
+    return db.news.aggregate([
+        {
+            "$match": {
+                "date": {
+                    "$exists": True
+                }
+            }
+        },
+        {
+            "$project": {
+                "month": {
+                    "$month": "$date"
+                },
+                "year": {
+                    "$year": "$date"
+                },
+                "day": {
+                    "$dayOfMonth": "$date"
+                },
+                "date": 1,
+                "title": 1,
+                "text": 1,
+                "link": 1
+            }
+        },
+        {
+            "$match": {
+                "day": day,
+                "month": month,
+                "year": year
+            }
+        },
+        {
+            "$sort": {
+                "date": 1
+            }
+        }
+    ])
+
+
 def drop_news():
     db.news.remove()
-
-# return db.news.aggregate([
-#         {
-#             '$match': {
-#                 "topic": {
-#                     "$exists": True
-#           .      }
-#             }
-#         },
-#         {"$project": {"_id": 0, "title": 1}},
-#         {"$unwind": "$title"},
-#         {"$group": {"_id": {"$toLower": "$title"}, "appears": {"$sum": 1}}},
-#         {"$sort": {"title": 1}}
-#     ])
 
 # drop_news()
