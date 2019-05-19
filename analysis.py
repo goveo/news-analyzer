@@ -81,7 +81,7 @@ def sort_dates_by_time(dates):
             days_number += 1
         prev_day = current_day
 
-    print(result)
+    # print(result)
     result = collections.OrderedDict(sorted(result.items()))
 
     for key, value in result.items():
@@ -98,7 +98,7 @@ def get_time():
     dict_keys = list(map(lambda x : "{}-{}".format(x*2, x*2+2), dates))
     top_keys = len(dates)
 
-    plt.title('Кількість новин у проміжок годин дня (статистика за {} день)'.format(days_number), fontsize=10)
+    plt.title('Середня кількість новин у проміжок годин дня (статистика за {} день)'.format(days_number), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
@@ -136,14 +136,14 @@ def sort_dates_by_weekday(dates):
 def get_weekdays():
     dates = filter.get_dates()
     weeks_number, dates = sort_dates_by_weekday(dates)
-    print(dates)
-    print("weeks_number : ", weeks_number)
+    # print(dates)
+    # print("weeks_number : ", weeks_number)
 
     dict_values = list(dates.values())
     dict_keys = list(map(lambda x: "{}".format(weekdays_list[x]), dates))
     top_keys = len(dates)
 
-    plt.title('Кількість новин у дні тижня (статистика за {} тижнів)'.format(weeks_number), fontsize=10)
+    plt.title('Середня кількість новин у дні тижня (статистика за {} тижнів)'.format(weeks_number), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
@@ -156,22 +156,16 @@ def get_posting_stat():
 
     dict_values = list()
     for obj in dates:
-        print(obj)
         dict_values.append(obj["count"])
 
-    dict_keys = list(map(lambda x: "=-)", dates))
-    top_keys = len(dict_values)
-
-    plt.title('Статистика новин у день', fontsize=10)
-    # plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
+    plt.title('Статистика новин за весь час', fontsize=10)
     plt.plot(np.arange(len(dict_values)), dict_values, 'bo', np.arange(len(dict_values)), dict_values, 'k')
-    # plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість новин', fontsize=10)
     plt.xlabel('Кількість днів')
     plt.show()
 
-# get_popular_title_words()
-# get_time()
-# get_weekdays()
+get_popular_title_words()
+get_time()
+get_weekdays()
 get_posting_stat()

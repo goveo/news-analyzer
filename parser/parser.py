@@ -41,6 +41,7 @@ class Spider(scrapy.Spider):
                 hour = int(time.split(":")[0])
                 minute = int(time.split(":")[1])
                 date = date.replace(hour=hour, minute=minute)
+
                 # print(title)
                 # print(text)
                 # print(link)
