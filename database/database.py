@@ -13,6 +13,11 @@ def connect(rs1="localhost:27001",
 
 def export_collection(db_name="course-work", collection="news", filepath="news.json", host="localhost:27100"):
     command = "mongoexport --db {} --collection {} --out {} --host {}".format(db_name, collection, filepath, host)
-    # print(command)
+    os.system(command)
+    return "{}.collection {} exported to file {}".format(db_name, collection, filepath)
+
+
+def import_collection(db_name="course-work", collection="news", filepath="news.json", host="localhost:27100"):
+    command = "mongoimport --db {} --collection {} --file {} --host {}".format(db_name, collection, filepath, host)
     os.system(command)
     return "{}.collection {} imported to file {}".format(db_name, collection, filepath)
