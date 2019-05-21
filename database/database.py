@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+import os
 
 def connect(rs1="localhost:27001",
             rs2="localhost:27002",
@@ -9,3 +9,10 @@ def connect(rs1="localhost:27001",
     # client = MongoClient([rs1, rs2, rs3], replicaset=rs_name)
     client = MongoClient("localhost:27100")
     return client[db_name]
+
+
+def export_collection(db_name="course-work", collection="news", filepath="news.json", host="localhost:27100"):
+    command = "mongoexport --db {} --collection {} --out {} --host {}".format(db_name, collection, filepath, host)
+    # print(command)
+    os.system(command)
+    return "{}.collection {} imported to file {}".format(db_name, collection, filepath)

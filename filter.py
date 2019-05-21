@@ -10,8 +10,11 @@ def get_all_titles():
 def get_dates():
     return db.news.aggregate([
         {
-            '$sort': {
-                'date': 1}
+            "$match": {
+                "date": {
+                    "$exists": True
+                }
+            }
         },
         {
             "$project": {
@@ -24,6 +27,13 @@ def get_dates():
 
 def get_all_news_dates():
     return db.news.aggregate([
+        {
+            "$match": {
+                "date": {
+                    "$exists": True
+                }
+            }
+        },
         {
             "$group": {
                 "_id": {
@@ -41,6 +51,7 @@ def get_all_news_dates():
         },
         {
             "$sort": {
+                "_id.year": 1,
                 "_id.day": 1
             }
         }
@@ -125,8 +136,8 @@ def get_news_per_day(year, month, day):
         }
     ])
 
-
-def drop_news():
-    db.news.remove()
+#
+# def drop_news():
+#     db.news.remove()
 
 # drop_news()

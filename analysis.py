@@ -1,15 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
 import nltk
 import collections
+import datetime
 from collections import defaultdict
 
 import filter
 import pymorphy2
 from nltk.corpus import stopwords
 from nltk import word_tokenize,sent_tokenize
-
 morph = pymorphy2.MorphAnalyzer()
 from collections import Counter
 
@@ -143,7 +142,7 @@ def get_weekdays():
     dict_keys = list(map(lambda x: "{}".format(weekdays_list[x]), dates))
     top_keys = len(dates)
 
-    plt.title('Середня кількість новин у дні тижня (статистика за {} тижнів)'.format(weeks_number), fontsize=10)
+    plt.title('Середня кількість новин у дні тижня (статистика за {} тижні)'.format(weeks_number), fontsize=10)
     plt.bar(np.arange(top_keys), dict_values, color=get_colors(top_keys))
     plt.xticks(np.arange(top_keys), dict_keys, rotation=90, fontsize=10)
     plt.yticks(fontsize=10)
@@ -152,14 +151,20 @@ def get_weekdays():
 
 
 def get_posting_stat():
-    dates = filter.get_all_news_dates()
+    data = filter.get_all_news_dates()
 
-    dict_values = list()
-    for obj in dates:
-        dict_values.append(obj["count"])
+    list_counts = list()
+    list_dates = list()
+    for obj in data:
+        list_counts.append(obj["count"])
+        # year = obj["_id"]["year"]
+        # day = obj["_id"]["day"]
+        # date = datetime.datetime(year, 1, 1) + datetime.timedelta(day - 1)
+        # print(date)
+        # list_dates.append(date)
 
     plt.title('Статистика новин за весь час', fontsize=10)
-    plt.plot(np.arange(len(dict_values)), dict_values, 'bo', np.arange(len(dict_values)), dict_values, 'k')
+    plt.plot(np.arange(len(list_counts)), list_counts, 'bo')
     plt.yticks(fontsize=10)
     plt.ylabel('Кількість новин', fontsize=10)
     plt.xlabel('Кількість днів')
@@ -182,7 +187,7 @@ def print_day_news(year, month, day):
 
 
 # print_month_news(year=2019, month=5)
-print_day_news(year=2019, month=5, day=10)
+# print_day_news(year=2019, month=5, day=10)
 
 # get_popular_title_words()
 # get_time()
