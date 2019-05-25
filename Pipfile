@@ -13,6 +13,7 @@ matplotlib = "*"
 pandas = "*"
 pymorphy2 = "*"
 nltk = "*"
+npyscreen = "*"
 
 [requires]
 python_version = "3.6"

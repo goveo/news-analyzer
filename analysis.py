@@ -89,7 +89,7 @@ def sort_dates_by_time(dates):
     return (days_number, dict(result))
 
 
-def get_time():
+def get_time(filename="time.png"):
     dates = filter.get_dates()
 
     days_number, dates = sort_dates_by_time(dates)
@@ -104,7 +104,7 @@ def get_time():
     plt.ylabel('Кількість новин', fontsize=10)
 
     plt.show()
-
+    # plt.savefig(filename)
 
 def sort_dates_by_weekday(dates):
     result = defaultdict(int)
