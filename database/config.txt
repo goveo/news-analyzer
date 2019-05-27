@@ -1,0 +1,5 @@
+sharding:
+  configDB: rs1/25.29.235.137:27001,25.29.235.137:27002,25.29.235.137:27003
+net:
+  bindIp: localhost, 25.28.119.135, 25.29.235.137
+security: authorization: enabled

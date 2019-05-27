@@ -7,7 +7,7 @@ from gui import mainList
 
 
 
-class MusiciansDBApp(npyscreen.NPSAppManaged):
+class App(npyscreen.NPSAppManaged):
     def __init__(self, *args, **keywords):
         super().__init__(*args, **keywords)
         self.db = database.connect()
@@ -20,10 +20,9 @@ class MusiciansDBApp(npyscreen.NPSAppManaged):
         pass
 
 
-
 if __name__ == '__main__':
 
-    MyApp = MusiciansDBApp()
+    MyApp = App()
     MyApp.run()
 
 

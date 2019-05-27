@@ -1,10 +1,15 @@
 import npyscreen
 import analysis
+import sys
+from database import database
 
 values_list = ['Get top 10 popular title words',
                'Get daytime statistic',
                'Get weekday statistic',
-               'Get total statistic']
+               'Get total statistic',
+               'Import news',
+               'Export news',
+               'Exit']
 
 class MainList(npyscreen.MultiLineAction):
     def __init__(self, *args, **keywords):
@@ -25,12 +30,19 @@ class MainList(npyscreen.MultiLineAction):
         func = None
         if (index == 0):
             func = analysis.get_popular_title_words
-        if (index == 1):
+        elif (index == 1):
             func = analysis.get_time
-        if (index == 2):
+        elif (index == 2):
             func = analysis.get_weekdays
-        if (index == 3):
+        elif (index == 3):
             func = analysis.get_posting_stat
+        elif (index == 4):
+            func = database.import_collection
+        elif (index == 5):
+            func = database.export_collection
+        elif (index == 6):
+            sys.exit(0)
+
         message_to_display = 'Processing...\nPicture will be opened in new window...'
         npyscreen.notify(message_to_display, title='Wait...')
         func()
