@@ -18,11 +18,10 @@ class MainList(npyscreen.MultiLineAction):
 
 
     def display_value(self, vl):
-        return "|{:^76}|".format(str(vl))
+        return "{:^80}".format(str(vl))
 
 
     def actionHighlighted(self, act_on_this, keypress):
-        self.parent.parentApp.switchForm(f"{act_on_this.upper()}LIST")
         self.spawn_notify_popup(act_on_this)
 
     def spawn_notify_popup(self, entity):
@@ -41,6 +40,7 @@ class MainList(npyscreen.MultiLineAction):
         elif (index == 5):
             func = database.export_collection
         elif (index == 6):
+            self.parent.parentApp.switchForm(None)
             sys.exit(0)
 
         message_to_display = 'Processing...\nPicture will be opened in new window...'
